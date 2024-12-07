@@ -41,6 +41,9 @@ jobs:
           docker tag crud-product-api ghcr.io/${{ github.repository_owner }}/crud-product-api:latest
           docker push ghcr.io/${{ github.repository_owner }}/crud-product-api:latest
 
+      - name: Install Heroku CLI
+        run: curl https://cli-assets.heroku.com/install.sh | sh
+
       - name: Deploy to Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
@@ -49,4 +52,3 @@ jobs:
           docker tag crud-product-api registry.heroku.com/crud-produc-api/web
           docker push registry.heroku.com/crud-produc-api/web
           heroku container:release web --app crud-produc-api
-          
