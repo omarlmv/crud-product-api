@@ -46,6 +46,6 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
-          docker tag crud-product-api registry.heroku.com/api-product-app/web
-          docker push registry.heroku.com/api-product-app/web
-          heroku container:release web --app api-product-app
+          docker tag crud-product-api registry.heroku.com/crud-produc-api/web
+          docker push registry.heroku.com/crud-produc-api/web
+          heroku container:release web --app crud-produc-api
