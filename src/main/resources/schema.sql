@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    category_id INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS statistics (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    date TIMESTAMP WITH TIME ZONE NOT NULL,
+    total_products INT NOT NULL,
+    total_updates INT NOT NULL,
+    total_deletions INT NOT NULL,
+    category VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);

@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  crud-product-api:
+    image: ghcr.io/omarlmv/crud-product-api:latest
+    ports:
+      - "8080:8080"

@@ -1,0 +1,288 @@
+openapi: 3.0.0
+info:
+  title: Product API
+  description: API for managing products, categories, and statistics
+  version: 1.0.0
+paths:
+  /api/products:
+    get:
+      summary: Get all products
+      operationId: getAllProducts
+      tags:
+        - Product
+      responses:
+        '200':
+          description: A list of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+    post:
+      summary: Create a new product
+      operationId: createProduct
+      tags:
+        - Product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+      responses:
+        '200':
+          description: The created product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        '404':
+          description: Category Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/products/{id}:
+    get:
+      summary: Get a product by ID
+      operationId: getProductById
+      tags:
+        - Product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: The product with the specified ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+    put:
+      summary: Update an existing product
+      operationId: updateProduct
+      tags:
+        - Product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+      responses:
+        '200':
+          description: The updated product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+    delete:
+      summary: Delete a product
+      operationId: deleteProduct
+      tags:
+        - Product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '204':
+          description: No content, product deleted
+  /api/categories:
+    get:
+      summary: Get all categories
+      operationId: getAllCategories
+      tags:
+        - Category
+      responses:
+        '200':
+          description: A list of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryResponse'
+    post:
+      summary: Create a new category
+      operationId: createCategory
+      tags:
+        - Category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+      responses:
+        '200':
+          description: The created category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+  /api/statistics:
+    get:
+      summary: Get all statistics
+      operationId: getAllStatistics
+      tags:
+        - Statistics
+      responses:
+        '200':
+          description: A list of statistics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StatisticsResponse'
+  /api/products/search:
+    get:
+      summary: Search products by name
+      operationId: searchProductsByName
+      tags:
+        - Product
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        '200':
+          description: A list of products matching the search criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ProductRequest:
+      type: object
+      required:
+        - name
+        - categoryId
+        - price
+        - status
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Name of the product
+        categoryId:
+          type: integer
+          minimum: 1
+          description: ID of the category the product belongs to
+        price:
+          type: number
+          minimum: 0.01
+          description: Price of the product, must be greater than zero
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - INACTIVE
+            - OUT_OF_STOCK
+          description: Status of the product
+    ProductResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        categoryId:
+          type: integer
+        price:
+          type: number
+        status:
+          type: string
+    CategoryRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Name of the category
+    CategoryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    StatisticsResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+          description: Date of the statistics (ISO 8601 format)
+        totalProducts:
+          type: integer
+          minimum: 0
+          description: Total number of products created
+        totalUpdates:
+          type: integer
+          minimum: 0
+          description: Total number of products updated
+        totalDeletions:
+          type: integer
+          minimum: 0
+          description: Total number of products deleted
+        category:
+          type: string
+          minLength: 1
+          description: Category of the statistics
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - error
+        - message
+      properties:
+        status:
+          type: integer
+          description: HTTP status code of the error
+        error:
+          type: string
+          minLength: 1
+          description: Error type
+        message:
+          type: string
+          minLength: 1
+          description: Detailed error message
