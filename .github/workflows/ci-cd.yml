@@ -33,7 +33,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.TOKEN_SECRET_PRODUCT }}
+          password: ${{ secrets.TOKEN_SECRET_CRUD_PRODUCT }}
 
       - name: Build and push Docker image
         run: |
