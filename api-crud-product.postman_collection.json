@@ -1,0 +1,266 @@
+{
+	"info": {
+		"_postman_id": "faadbd32-af5b-417d-ba8c-7e275cf78628",
+		"name": "api-crud-product-heroku",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40266309"
+	},
+	"item": [
+		{
+			"name": "create product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Product Name\",\r\n    \"categoryId\": 1,\r\n    \"price\": 100.0,\r\n    \"status\": \"ACTIVE\"\r\n}"
+				},
+				"url": {
+					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/products",
+					"protocol": "https",
+					"host": [
+						"crud-produc-api-680ea42e2447",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list categories",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/categories",
+					"protocol": "https",
+					"host": [
+						"crud-produc-api-680ea42e2447",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create category",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"New Category\"\r\n}"
+				},
+				"url": {
+					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/categories",
+					"protocol": "https",
+					"host": [
+						"crud-produc-api-680ea42e2447",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update product",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Updated Product Name\",\r\n    \"categoryId\": 1,\r\n    \"price\": 99.99,\r\n    \"status\": \"ACTIVE\"\r\n}"
+				},
+				"url": {
+					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/products/1",
+					"protocol": "https",
+					"host": [
+						"crud-produc-api-680ea42e2447",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete product",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/products/1",
+					"protocol": "https",
+					"host": [
+						"crud-produc-api-680ea42e2447",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get product by id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/products/1",
+					"protocol": "https",
+					"host": [
+						"crud-produc-api-680ea42e2447",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get products all",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/products",
+					"protocol": "https",
+					"host": [
+						"crud-produc-api-680ea42e2447",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "statistics",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/statistics",
+					"protocol": "https",
+					"host": [
+						"crud-produc-api-680ea42e2447",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"statistics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search by name",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/products/search?name=Product",
+					"protocol": "https",
+					"host": [
+						"crud-produc-api-680ea42e2447",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"products",
+						"search"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Product"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
