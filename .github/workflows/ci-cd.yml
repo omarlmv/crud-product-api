@@ -49,3 +49,4 @@ jobs:
           docker tag crud-product-api registry.heroku.com/crud-produc-api/web
           docker push registry.heroku.com/crud-produc-api/web
           heroku container:release web --app crud-produc-api
+          
