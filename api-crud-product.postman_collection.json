@@ -7,6 +7,37 @@
 	},
 	"item": [
 		{
+			"name": "generate token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user\",\r\n    \"password\": \"password\"\r\n}"
+				},
+				"url": {
+					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/auth/login",
+					"protocol": "https",
+					"host": [
+						"crud-produc-api-680ea42e2447",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "create product",
 			"request": {
 				"method": "POST",
@@ -14,6 +45,10 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
 					}
 				],
 				"body": {
@@ -42,8 +77,12 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "Accept",
+						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
 					}
 				],
 				"url": {
@@ -70,11 +109,15 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"New Category\"\r\n}"
+					"raw": "{\r\n    \"name\": \"Category Name\"\r\n}"
 				},
 				"url": {
 					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/categories",
@@ -100,11 +143,15 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Updated Product Name\",\r\n    \"categoryId\": 1,\r\n    \"price\": 99.99,\r\n    \"status\": \"ACTIVE\"\r\n}"
+					"raw": "{\r\n    \"name\": \"Updated Product Name\",\r\n    \"categoryId\": 1,\r\n    \"price\": 150.0,\r\n    \"status\": \"ACTIVE\"\r\n}"
 				},
 				"url": {
 					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/products/1",
@@ -131,6 +178,10 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
 					}
 				],
 				"url": {
@@ -158,6 +209,10 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
 					}
 				],
 				"url": {
@@ -185,6 +240,10 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
 					}
 				],
 				"url": {
@@ -211,6 +270,10 @@
 					{
 						"key": "accept",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
 					}
 				],
 				"url": {
@@ -237,6 +300,10 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
 					}
 				],
 				"url": {

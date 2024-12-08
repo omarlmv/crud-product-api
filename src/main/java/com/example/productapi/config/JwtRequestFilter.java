@@ -27,7 +27,13 @@ public class JwtRequestFilter implements WebFilter {
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7);
-            String username = jwtUtil.extractUsername(token);
+            String username;
+            try {
+                username = jwtUtil.extractUsername(token);
+            } catch (Exception e) {
+                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                return exchange.getResponse().setComplete();
+            }
 
             return userDetailsService.findByUsername(username)
                     .flatMap(userDetails -> {
