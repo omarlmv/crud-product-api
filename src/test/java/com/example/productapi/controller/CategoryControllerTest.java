@@ -7,6 +7,7 @@ import com.example.productapi.model.CategoryRequest;
 import com.example.productapi.model.CategoryResponse;
 import com.example.productapi.service.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -40,6 +41,7 @@ class CategoryControllerTest {
     }
 
     @Test
+    @DisplayName("Create category successfully")
     void createCategorySuccessfully() {
         CategoryRequest request = new CategoryRequest();
         CategoryResponse response = new CategoryResponse();
@@ -53,6 +55,7 @@ class CategoryControllerTest {
     }
 
     @Test
+    @DisplayName("Handle error during category creation")
     void createCategoryWithError() {
         CategoryRequest request = new CategoryRequest();
         when(categoryService.createCategory(any())).thenReturn(Mono.error(new RuntimeException()));
@@ -65,6 +68,7 @@ class CategoryControllerTest {
     }
 
     @Test
+    @DisplayName("Retrieve all categories successfully")
     void getAllCategoriesSuccessfully() {
         CategoryResponse response = new CategoryResponse();
         when(categoryService.getAllCategories()).thenReturn(Flux.just(response));

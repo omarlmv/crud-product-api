@@ -4,6 +4,7 @@ import com.example.productapi.facade.ProductFacade;
 import com.example.productapi.model.ProductRequest;
 import com.example.productapi.model.ProductResponse;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,6 +44,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("Create product successfully")
     void createProductSuccessfully() {
         ProductRequest request = new ProductRequest();
         ProductResponse response = new ProductResponse();
@@ -58,6 +60,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("Update product with error")
     void createProductValidationError() {
         ProductRequest request = new ProductRequest();
         ConstraintViolation<ProductRequest> violation = mock(ConstraintViolation.class);
@@ -75,6 +78,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("Update product successfully")
     void updateProductSuccessfully() {
         ProductRequest request = new ProductRequest();
         ProductResponse response = new ProductResponse();
@@ -90,6 +94,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("Delete product not found")
     void deleteProductNotFound() {
         when(productFacade.deleteProduct(anyInt())).thenReturn(Mono.empty());
         Mono<ResponseEntity<Void>> result = productController.deleteProduct(999, mock(ServerWebExchange.class));
@@ -99,6 +104,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("Delete product successfully")
     void getAllProductsSuccessfully() {
         ProductResponse response = new ProductResponse();
         when(productFacade.getAllProducts()).thenReturn(Flux.just(response));

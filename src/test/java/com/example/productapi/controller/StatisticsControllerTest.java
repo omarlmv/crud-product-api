@@ -4,6 +4,7 @@ import com.example.productapi.model.StatisticsResponse;
 import com.example.productapi.service.CategoryService;
 import com.example.productapi.service.StatisticsService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,12 +36,11 @@ public class StatisticsControllerTest {
     }
 
     @Test
+    @DisplayName("Get all statistics successfully")
     void getAllStatisticsSuccessfully() {
         StatisticsResponse response = new StatisticsResponse();
         when(statisticsService.getAllStatistics()).thenReturn(Flux.just(response));
-
         Mono<ResponseEntity<Flux<StatisticsResponse>>> result = statisticsController.getAllStatistics(mock(ServerWebExchange.class));
-
         StepVerifier.create(result)
                 .assertNext(entity -> {
                     assertEquals(200, entity.getStatusCodeValue());
@@ -52,11 +52,10 @@ public class StatisticsControllerTest {
     }
 
     @Test
+    @DisplayName("Get all statistics when no data is available")
     void getAllStatisticsEmpty() {
         when(statisticsService.getAllStatistics()).thenReturn(Flux.empty());
-
         Mono<ResponseEntity<Flux<StatisticsResponse>>> result = statisticsController.getAllStatistics(mock(ServerWebExchange.class));
-
         StepVerifier.create(result)
                 .assertNext(entity -> {
                     assertEquals(200, entity.getStatusCodeValue());
