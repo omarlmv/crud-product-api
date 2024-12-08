@@ -13,6 +13,4 @@ public class Category {
     @Id
     private Integer id;
     private String name;
-
-    // Getters and Setters
 }

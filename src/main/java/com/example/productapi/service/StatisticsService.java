@@ -8,6 +8,7 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDateTime;
 
 public interface StatisticsService {
-    Mono<Void> createStatistics(LocalDateTime date, int totalProducts, int totalUpdates, int totalDeletions, String category);
     Flux<StatisticsResponse> getAllStatistics();
+
+    Mono<StatisticsResponse> calculateDynamicStatistics(Integer productId);
 }

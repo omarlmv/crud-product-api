@@ -18,11 +18,12 @@ import reactor.core.publisher.Mono;
 public class SecurityConfig {
 
     @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http,
-                                                         JwtRequestFilter jwtRequestFilter) {
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http, JwtRequestFilter jwtRequestFilter) {
         return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/api/auth/login").permitAll()
+                        .pathMatchers("/api/products").permitAll()
+                        .pathMatchers("/api/statistics/**").permitAll()
                         .pathMatchers("/api/admin/**").hasRole("ADMIN")
                         .pathMatchers("/api/user/**").hasRole("USER")
                         .anyExchange().authenticated())

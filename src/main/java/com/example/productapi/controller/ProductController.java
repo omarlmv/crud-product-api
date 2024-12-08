@@ -18,24 +18,44 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+import javax.validation.Validator;
+import java.util.Set;
+
 @RestController
-@Validated
+//@Validated
 public class ProductController implements ProductApi {
 
     private final ProductFacade productFacade;
+    //private final ValidationService validationService;
+
+    private final Validator validator;
 
     @Autowired
-    public ProductController(ProductFacade productFacade) {
+    public ProductController(ProductFacade productFacade, Validator validator) {
         this.productFacade = productFacade;
+        //this.validationService = validationService;
+        this.validator = validator;
     }
 
 
     @Override
-    public Mono<ResponseEntity<ProductResponse>> createProduct(@RequestBody Mono<ProductRequest> productRequest,
-    ServerWebExchange exchange) {
+    public Mono<ResponseEntity<ProductResponse>> createProduct(@RequestBody Mono<ProductRequest> productRequest, ServerWebExchange exchange) {
         return productRequest
+                .flatMap(this::validateRequest)
                 .flatMap(productFacade::createProduct)
                 .map(ResponseEntity::ok);
+    }
+
+
+    private <T> Mono<T> validateRequest(T request) {
+        Set<ConstraintViolation<T>> violations = validator.validate(request);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+        return Mono.just(request);
     }
 
     @Override
@@ -43,9 +63,9 @@ public class ProductController implements ProductApi {
                                                                @RequestBody Mono<ProductRequest> productRequest,
                                                                ServerWebExchange exchange) {
         return productRequest
+                .flatMap(this::validateRequest)
                 .flatMap(request -> productFacade.updateProduct(id, request))
-                .map(ResponseEntity::ok)
-                .onErrorResume(e -> Mono.just(ResponseEntity.badRequest().build()));
+                .map(ResponseEntity::ok);
     }
 
     @Override
@@ -70,7 +90,7 @@ public class ProductController implements ProductApi {
     }
 
     @Override
-    public Mono<ResponseEntity<Flux<ProductResponse>>> searchProductsByName(String name, ServerWebExchange exchange) {
+    public Mono<ResponseEntity<Flux<ProductResponse>>> searchProductsByName(@Valid String name, ServerWebExchange exchange) {
         return Mono.just(ResponseEntity.ok(productFacade.searchProductsByName(name)));
     }
 }

@@ -9,14 +9,28 @@ CREATE TABLE IF NOT EXISTS products (
 
 CREATE TABLE IF NOT EXISTS statistics (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    date TIMESTAMP WITH TIME ZONE NOT NULL,
+    category VARCHAR(255) NOT NULL,
     total_products INT NOT NULL,
-    total_updates INT NOT NULL,
-    total_deletions INT NOT NULL,
-    category VARCHAR(255) NOT NULL
+    active_products INT NOT NULL,
+    inactive_products INT NOT NULL,
+    average_price DECIMAL(10, 2) NOT NULL,
+    most_popular_product VARCHAR(255),
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE categories (
+CREATE TABLE IF NOT EXISTS categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
+
+-- Example insertion for categories
+INSERT INTO categories (name)
+VALUES ('Electronics');
+
+-- Example insertion for products
+INSERT INTO products (name, category_id, price, status, created_at)
+VALUES ('Smartphone', 1, 150.75, 'ACTIVE', CURRENT_TIMESTAMP);
+
+-- Example insertion for statistics
+INSERT INTO statistics (category, total_products, active_products, inactive_products, average_price, most_popular_product, last_updated)
+VALUES ('Electronics', 1, 1, 0, 150.75, 'Smartphone', CURRENT_TIMESTAMP);

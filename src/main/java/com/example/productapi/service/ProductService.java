@@ -12,6 +12,5 @@ public interface ProductService {
     Mono<Void> deleteProduct(Integer id);
     Flux<ProductResponse> getAllProducts();
     Mono<ProductResponse> getProductById(Integer id);
-
     Flux<ProductResponse> searchProductsByName(String name);
 }

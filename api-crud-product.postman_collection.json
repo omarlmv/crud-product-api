@@ -53,7 +53,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Product Name\",\r\n    \"categoryId\": 1,\r\n    \"price\": 100.0,\r\n    \"status\": \"ACTIVE\"\r\n}"
+					"raw": "{\r\n    \"name\": \"Mouse\",\r\n    \"categoryId\": 1,\r\n    \"price\": 20.0,\r\n    \"status\": \"ACTIVE\"\r\n}"
 				},
 				"url": {
 					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/products",

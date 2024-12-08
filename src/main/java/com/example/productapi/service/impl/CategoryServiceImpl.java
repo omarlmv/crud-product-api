@@ -15,14 +15,10 @@ import reactor.core.publisher.Mono;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    private final CategoryRepository categoryRepository;
-    private final CategoryMapper categoryMapper;
-
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
-        this.categoryRepository = categoryRepository;
-        this.categoryMapper = categoryMapper;
-    }
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     @Override
     public Mono<CategoryResponse> createCategory(CategoryRequest categoryRequest) {

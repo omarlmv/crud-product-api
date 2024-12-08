@@ -144,13 +144,13 @@ paths:
                 $ref: '#/components/schemas/CategoryResponse'
   /api/statistics:
     get:
-      summary: Get all statistics
+      summary: Get all statistics, including all registered categories
       operationId: getAllStatistics
       tags:
         - Statistics
       responses:
         '200':
-          description: A list of statistics
+          description: A list of statistics for all categories
           content:
             application/json:
               schema:
@@ -271,28 +271,45 @@ components:
     StatisticsResponse:
       type: object
       properties:
-        id:
-          type: integer
-        date:
-          type: string
-          format: date-time
-          description: Date of the statistics (ISO 8601 format)
-        totalProducts:
-          type: integer
-          minimum: 0
-          description: Total number of products created
-        totalUpdates:
-          type: integer
-          minimum: 0
-          description: Total number of products updated
-        totalDeletions:
-          type: integer
-          minimum: 0
-          description: Total number of products deleted
         category:
           type: string
-          minLength: 1
-          description: Category of the statistics
+          description: Name of the category
+        overview:
+          type: object
+          properties:
+            totalProducts:
+              type: integer
+              minimum: 0
+              description: Total number of products in the category
+            activeProducts:
+              type: integer
+              minimum: 0
+              description: Number of active products in the category
+            inactiveProducts:
+              type: integer
+              minimum: 0
+              description: Number of inactive products in the category
+        financials:
+          type: object
+          properties:
+            averagePrice:
+              type: number
+              format: float
+              description: Average price of products in the category
+            potentialRevenue:
+              type: number
+              format: float
+              description: Potential revenue from active products in the category
+        highlights:
+          type: object
+          properties:
+            mostPopularProduct:
+              type: string
+              description: Name of the most popular product in the category
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Last update timestamp for the statistics
     ErrorResponse:
       type: object
       required:
