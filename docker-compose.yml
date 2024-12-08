@@ -1,7 +1,11 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  crud-product-api:
-    image: ghcr.io/omarlmv/crud-product-api:latest
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    environment:
+      - JWT_SECRET=password

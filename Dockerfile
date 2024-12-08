@@ -4,11 +4,11 @@ FROM openjdk:17-jdk-slim-buster
 # Establece el directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Copia los archivos jar generados por el build
+# Copia el archivo JAR generado por el build
 COPY target/*.jar app.jar
 
-# Exponer el puerto en el que la aplicación se ejecuta
+# Configura el puerto expuesto
 EXPOSE 8080
 
 # Comando para ejecutar la aplicación
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dserver.port=8080", "-jar", "app.jar"]
