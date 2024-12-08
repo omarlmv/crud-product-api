@@ -47,7 +47,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer {{token}}"
+						"value": "Bearer {{token-local}}"
 					}
 				],
 				"body": {
@@ -80,7 +80,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer {{token}}"
+						"value": "Bearer {{token-local}}"
 					}
 				],
 				"url": {
@@ -109,7 +109,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer {{token}}"
+						"value": "Bearer {{token-local}}"
 					}
 				],
 				"body": {
@@ -142,7 +142,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer {{token}}"
+						"value": "Bearer {{token-local}}"
 					}
 				],
 				"body": {
@@ -176,7 +176,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer {{token}}"
+						"value": "Bearer {{token-local}}"
 					}
 				],
 				"url": {
@@ -206,7 +206,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer {{token}}"
+						"value": "Bearer {{token-local}}"
 					}
 				],
 				"url": {
@@ -236,7 +236,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer {{token}}"
+						"value": "Bearer {{token-local}}"
 					}
 				],
 				"url": {
@@ -265,7 +265,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer {{token}}"
+						"value": "Bearer {{token-local}}"
 					}
 				],
 				"url": {
@@ -294,7 +294,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer {{token}}"
+						"value": "Bearer {{token-local}}"
 					}
 				],
 				"url": {
