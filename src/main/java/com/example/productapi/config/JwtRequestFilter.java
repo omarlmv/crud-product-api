@@ -1,63 +1,49 @@
 package com.example.productapi.config;
-/*
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
+import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-*/
-//@Component
-public class JwtRequestFilter {//extends OncePerRequestFilter
-/*
-    private static final Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
+@Component
+public class JwtRequestFilter implements WebFilter {
 
-    @Autowired
-    @Lazy
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
+    private final ReactiveUserDetailsService userDetailsService;
 
-    @Autowired
-    @Lazy
-    private UserDetailsService userDetailsService;
+    public JwtRequestFilter(JwtUtil jwtUtil, ReactiveUserDetailsService userDetailsService) {
+        this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authorizationHeader = request.getHeader("Authorization");
-        logger.debug("Authorization Header: {}", authorizationHeader);
+    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+        String authorizationHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
 
-        String token = jwtUtil.extractToken(authorizationHeader);
-        if (token != null) {
-            logger.debug("Token extracted: {}", token);
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7);
+            String username = jwtUtil.extractUsername(token);
 
-            if (jwtUtil.validateToken(token)) {
-                String username = jwtUtil.extractUsername(token);
-                logger.debug("Username extracted: {}", username);
-
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                if (jwtUtil.validateToken(token, userDetails)) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                    logger.debug("Authentication successful for user: {}", username);
-                } else {
-                    logger.debug("Token validation failed for user: {}", username);
-                }
-            } else {
-                logger.debug("Token validation failed for token: {}", token);
-            }
+            return userDetailsService.findByUsername(username)
+                    .flatMap(userDetails -> {
+                        if (jwtUtil.validateToken(token, userDetails.getUsername())) {
+                            UsernamePasswordAuthenticationToken authentication =
+                                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                            return chain.filter(exchange)
+                                    .contextWrite(ReactiveSecurityContextHolder.withAuthentication(authentication));
+                        }
+                        return Mono.error(new RuntimeException("Invalid JWT Token"));
+                    })
+                    .onErrorResume(e -> {
+                        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                        return exchange.getResponse().setComplete();
+                    });
         }
-
-        filterChain.doFilter(request, response);
-    }*/
+        return chain.filter(exchange);
+    }
 }
