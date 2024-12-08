@@ -18,11 +18,16 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import javax.validation.Validator;
+
 @ExtendWith(MockitoExtension.class)
 class CategoryControllerTest {
 
     @Mock
     private CategoryService categoryService;
+
+    @Mock
+    private Validator validator;
 
     @InjectMocks
     private CategoryController categoryController;
@@ -30,7 +35,8 @@ class CategoryControllerTest {
     @BeforeEach
     void setUp() {
         categoryService = mock(CategoryService.class);
-        categoryController = new CategoryController(categoryService);
+        validator = mock(Validator.class);
+        categoryController = new CategoryController(categoryService, validator);
     }
 
     @Test
@@ -54,8 +60,8 @@ class CategoryControllerTest {
         Mono<ResponseEntity<CategoryResponse>> result = categoryController.createCategory(Mono.just(request), mock(ServerWebExchange.class));
 
         StepVerifier.create(result)
-                .expectNext(ResponseEntity.badRequest().build())
-                .verifyComplete();
+                .expectError(RuntimeException.class)
+                .verify();
     }
 
     @Test

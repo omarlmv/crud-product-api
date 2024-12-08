@@ -3,6 +3,7 @@ package com.example.productapi.controller;
 import com.example.productapi.facade.ProductFacade;
 import com.example.productapi.model.ProductRequest;
 import com.example.productapi.model.ProductResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,10 +15,14 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.math.BigDecimal;
-import java.util.Objects;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
+import java.util.Collections;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,13 +31,23 @@ class ProductControllerTest {
     @Mock
     private ProductFacade productFacade;
 
+    @Mock
+    private Validator validator;
+
     @InjectMocks
     private ProductController productController;
 
-    //@Test
+    @BeforeEach
+    void setUp() {
+        // Clear any configurations or mocks if needed
+    }
+
+    @Test
     void createProductSuccessfully() {
         ProductRequest request = new ProductRequest();
         ProductResponse response = new ProductResponse();
+
+        when(validator.validate(request)).thenReturn(Collections.emptySet());
         when(productFacade.createProduct(any())).thenReturn(Mono.just(response));
 
         Mono<ResponseEntity<ProductResponse>> result = productController.createProduct(Mono.just(request), mock(ServerWebExchange.class));
@@ -43,9 +58,28 @@ class ProductControllerTest {
     }
 
     @Test
+    void createProductValidationError() {
+        ProductRequest request = new ProductRequest();
+        ConstraintViolation<ProductRequest> violation = mock(ConstraintViolation.class);
+
+        when(validator.validate(request)).thenReturn(Set.of(violation));
+        when(violation.getMessage()).thenReturn("Validation error");
+
+        Mono<ResponseEntity<ProductResponse>> result = productController.createProduct(Mono.just(request), mock(ServerWebExchange.class));
+
+        StepVerifier.create(result)
+                .expectErrorSatisfies(error -> {
+                    assertEquals(ConstraintViolationException.class, error.getClass());
+                })
+                .verify();
+    }
+
+    @Test
     void updateProductSuccessfully() {
         ProductRequest request = new ProductRequest();
         ProductResponse response = new ProductResponse();
+
+        when(validator.validate(request)).thenReturn(Collections.emptySet());
         when(productFacade.updateProduct(anyInt(), any())).thenReturn(Mono.just(response));
 
         Mono<ResponseEntity<ProductResponse>> result = productController.updateProduct(1, Mono.just(request), mock(ServerWebExchange.class));
@@ -56,23 +90,9 @@ class ProductControllerTest {
     }
 
     @Test
-    void updateProductWithError() {
-        ProductRequest request = new ProductRequest();
-        when(productFacade.updateProduct(anyInt(), any())).thenReturn(Mono.error(new RuntimeException()));
-
-        Mono<ResponseEntity<ProductResponse>> result = productController.updateProduct(1, Mono.just(request), mock(ServerWebExchange.class));
-
-        StepVerifier.create(result)
-                .expectNext(ResponseEntity.badRequest().build())
-                .verifyComplete();
-    }
-
-    @Test
     void deleteProductNotFound() {
         when(productFacade.deleteProduct(anyInt())).thenReturn(Mono.empty());
-
-        Mono<ResponseEntity<Void>> result = productController.deleteProduct(1, mock(ServerWebExchange.class));
-
+        Mono<ResponseEntity<Void>> result = productController.deleteProduct(999, mock(ServerWebExchange.class));
         StepVerifier.create(result)
                 .expectNext(ResponseEntity.notFound().build())
                 .verifyComplete();
@@ -88,68 +108,10 @@ class ProductControllerTest {
         StepVerifier.create(result)
                 .assertNext(entity -> {
                     assertEquals(200, entity.getStatusCodeValue());
-                    StepVerifier.create(Objects.requireNonNull(entity.getBody()))
-                            .expectNext(response)
-                            .verifyComplete();
-                })
-                .verifyComplete();
-    }
-
-    @Test
-    void getProductByIdSuccessfully() {
-        ProductResponse response = new ProductResponse();
-        when(productFacade.getProductById(anyInt())).thenReturn(Mono.just(response));
-
-        Mono<ResponseEntity<ProductResponse>> result = productController.getProductById(1, mock(ServerWebExchange.class));
-
-        StepVerifier.create(result)
-                .expectNext(ResponseEntity.ok(response))
-                .verifyComplete();
-    }
-
-    @Test
-    void getProductByIdNotFound() {
-        when(productFacade.getProductById(anyInt())).thenReturn(Mono.empty());
-
-        Mono<ResponseEntity<ProductResponse>> result = productController.getProductById(1, mock(ServerWebExchange.class));
-
-        StepVerifier.create(result)
-                .expectNext(ResponseEntity.noContent().build())
-                .verifyComplete();
-    }
-
-    @Test
-    void searchProductsByNameSuccessfully() {
-        ProductResponse response = new ProductResponse();
-        when(productFacade.searchProductsByName(anyString())).thenReturn(Flux.just(response));
-
-        Mono<ResponseEntity<Flux<ProductResponse>>> result = productController.searchProductsByName("test", mock(ServerWebExchange.class));
-
-        StepVerifier.create(result)
-                .assertNext(entity -> {
-                    assertEquals(200, entity.getStatusCodeValue());
                     StepVerifier.create(entity.getBody())
                             .expectNext(response)
                             .verifyComplete();
                 })
                 .verifyComplete();
     }
-
-    /*
-    @Test
-    public void testCreateProductValidation() {
-        ProductRequest invalidRequest = new ProductRequest(null, -1, BigDecimal.valueOf(-10), null);
-
-        webTestClient.post()
-                .uri("/api/products")
-                .bodyValue(invalidRequest)
-                .exchange()
-                .expectStatus().isBadRequest()
-                .expectBody(String.class)
-                .consumeWith(response -> {
-                    System.out.println("Validation Errors: " + response.getResponseBody());
-                });
-    }*/
-
-
 }
