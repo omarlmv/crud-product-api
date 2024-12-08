@@ -27,7 +27,6 @@ public interface StatisticsMapper {
         return localDateTime == null ? null : localDateTime.atOffset(ZoneOffset.UTC);
     }
 
-    // Métodos adicionales para crear `overview`, `financials`, `highlights`
     default StatisticsResponseOverview createOverview(Statistics statistics) {
         return new StatisticsResponseOverview(
                 statistics.getTotalProducts(),

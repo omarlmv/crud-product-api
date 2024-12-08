@@ -307,7 +307,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/products/search?name=Product",
+					"raw": "https://crud-produc-api-680ea42e2447.herokuapp.com/api/products/search?name=Smartphone",
 					"protocol": "https",
 					"host": [
 						"crud-produc-api-680ea42e2447",
@@ -322,7 +322,7 @@
 					"query": [
 						{
 							"key": "name",
-							"value": "Product"
+							"value": "Smartphone"
 						}
 					]
 				}

@@ -18,7 +18,4 @@ public interface ProductMapper {
 
     ProductResponse toResponse(Product product);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    void updateProductFromDto(ProductRequest productRequest, @MappingTarget Product product);
 }

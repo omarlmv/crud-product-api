@@ -17,15 +17,10 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    // Generar una clave secreta segura para HS256
     private final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
-    }
-
-    public Date extractExpirationx(String token) {
-        return extractClaim(token, Claims::getExpiration);
     }
 
     public OffsetDateTime extractExpiration(String token) {
@@ -45,10 +40,6 @@ public class JwtUtil {
                 .getBody();
     }
 
-    /*private Boolean isTokenExpiredx(String token) {
-        return extractExpiration(token).before(new Date());
-    }*/
-
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).isBefore(OffsetDateTime.now());
     }
@@ -64,7 +55,7 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hora
-                .signWith(SECRET_KEY) // Usar la clave generada
+                .signWith(SECRET_KEY)
                 .compact();
     }
 

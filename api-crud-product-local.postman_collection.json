@@ -298,7 +298,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/api/products/search?name=Product",
+					"raw": "http://localhost:8080/api/products/search?name=Smartphone",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -312,7 +312,7 @@
 					"query": [
 						{
 							"key": "name",
-							"value": "Product"
+							"value": "Smartphone"
 						}
 					]
 				}
